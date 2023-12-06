@@ -76,29 +76,40 @@ const ChargingMap = () => {
       markerColor = "#ffa45c"; // Orange for ChargePoint
     }
 
+    // Check for charger capacity and display it if greater than 1
+    const hasCapacity = station.metadata?.capacity > 1;
+    const capacityText = hasCapacity ? station.metadata.capacity : "";
+
     return (
       <Marker
         key={station.id}
         latitude={station.lat}
         longitude={station.lng}
         anchor="center"
-        style={{ cursor: "pointer" }}
         onClick={(e) => {
           e.originalEvent.stopPropagation();
           setActiveStation(station.id);
         }}
       >
         {isTesla ? (
-          <TeslaLogo size={30} />
+          <div className="relative">
+            <TeslaLogo size={30} />
+            {hasCapacity && (
+              <div className="absolute top-[-5px] right-[-5px] bg-white font-bold rounded-full w-4 h-4 flex items-center justify-center text-xs">
+                {capacityText}
+              </div>
+            )}
+          </div>
         ) : (
           <div
-            style={{
-              height: "18px",
-              width: "18px",
-              backgroundColor: markerColor,
-              borderRadius: "50%",
-            }}
-          ></div>
+            className={`relative h-6 w-6 rounded-full flex items-center justify-center ${markerColor === "#f4fa9c" ? "bg-yellow-200" : markerColor === "#a7ff83" ? "bg-green-200" : "bg-orange-200"}`}
+          >
+            {hasCapacity && (
+              <div className="absolute top-[-5px] right-[-5px] bg-white font-bold rounded-full w-4 h-4 flex items-center justify-center text-xs">
+                {capacityText}
+              </div>
+            )}
+          </div>
         )}
       </Marker>
     );
