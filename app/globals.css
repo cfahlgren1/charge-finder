@@ -1,0 +1,10 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* globals.css */
+
+/* Overrides the original padding of the Popup component in the Map */
+.mapboxgl-popup-content {
+    padding: 0 !important;
+}
