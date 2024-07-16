@@ -4,7 +4,6 @@ import Pin from "./Pin";
 import "mapbox-gl/dist/mapbox-gl.css";
 import TeslaLogo from "./TeslaLogo";
 
-// Define a type for the charging station data
 type ChargingStation = {
   id: number;
   name: string | null;
@@ -38,7 +37,15 @@ const ChargingMap = () => {
       latitude: event.lngLat.lat,
     });
 
-    // Optionally call fetchChargers or any other function that uses the marker's position
+    fetchChargers(event.lngLat.lat, event.lngLat.lng);
+  }, []);
+
+  const onMapClick = useCallback((event) => {
+    setMarker({
+      longitude: event.lngLat.lng,
+      latitude: event.lngLat.lat,
+    });
+
     fetchChargers(event.lngLat.lat, event.lngLat.lng);
   }, []);
 
@@ -121,6 +128,7 @@ const ChargingMap = () => {
         initialViewState={initialViewState}
         mapboxAccessToken={process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN}
         mapStyle="mapbox://styles/cfahlgren1/clpsxuk1r00u901qm5j6236l7"
+        onClick={onMapClick}
       >
         <Marker
           longitude={marker.longitude}
